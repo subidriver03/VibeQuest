@@ -1,0 +1,65 @@
+﻿@using VibeQuest.Models
+
+@page "/tasks"
+@inject VibeQuest.Services.TaskService TaskService;
+
+<h2>Task Board</h2>
+
+<h4>Add a Task</h4>
+<input @bind="newTask.Title" placeholder="Task title" />
+<select @bind="newTask.SkillCategory">
+    <option value="">-- Select Skill --</option>
+    <option>Mind</option>
+    <option>Body</option>
+    <option>Creativity</option>
+    <option>Focus</option>
+</select>
+<select @bind="newTask.Difficulty">
+    <option value="1">Easy (1)</option>
+    <option value="2">Medium (2)</option>
+    <option value="3">Hard (3)</option>
+</select>
+<button @onclick="AddTask">Add</button>
+
+<h4>Tasks</h4>
+<ul>
+    @foreach (var task in TaskService.Tasks)
+    {
+        <li>
+            @task.Title - @task.SkillCategory - Difficulty @task.Difficulty
+            @if (!task.IsCompleted)
+            {
+                <button @onclick="() => Complete(task)">Complete</button>
+            }
+            else
+            {
+                <span style="color: green;">✔️ Completed</span>
+            }
+        </li>
+    }
+</ul>
+
+<h4>Progress</h4>
+<p>Mind: @TaskService.Progress.Mind XP</p>
+<p>Body: @TaskService.Progress.Body XP</p>
+<p>Creativity: @TaskService.Progress.Creativity XP</p>
+<p>Focus: @TaskService.Progress.Focus XP</p>
+<p><strong>Total XP:</strong> @TaskService.Progress.TotalXP</p>
+
+@code {
+    private QuestTask newTask = new();
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTask.Title) && !string.IsNullOrWhiteSpace(newTask.SkillCategory))
+        {
+            TaskService.AddTask(newTask);
+            newTask = new(); // reset
+        }
+    }
+
+    private void Complete(QuestTask task)
+    {
+        TaskService.CompleteTask(task);
+    }
+}

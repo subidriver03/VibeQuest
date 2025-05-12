@@ -1,0 +1,30 @@
+﻿@page "/"
+@inject VibeQuest.Services.TaskService TaskService
+
+<h1>Welcome to Vibe Quest 🎮</h1>
+<p class="lead">Level up your real life — one quest at a time.</p>
+
+<hr />
+
+<h3>XP Progress</h3>
+
+<div style="max-width: 500px; border: 1px solid #444; border-radius: 8px; padding: 10px; background-color: #222;">
+    <label style="color: white;">Total XP: @TaskService.Progress.TotalXP</label>
+    <div style="height: 20px; width: 100%; background-color: #555; border-radius: 5px; overflow: hidden;">
+        <div style="
+            width: @XPPercentage%;
+            height: 100%;
+            background: linear-gradient(90deg, #00f260, #0575e6);
+            transition: width 0.3s ease;
+        "></div>
+    </div>
+</div>
+
+<p class="mt-3">Complete more quests to boost your XP and level up!</p>
+
+<a class="btn btn-primary mt-4" href="/tasks">Go to Task Board</a>
+
+@code {
+    private int XPGoal = 100;
+    private int XPPercentage => Math.Min(TaskService.Progress.TotalXP * 100 / XPGoal, 100);
+}

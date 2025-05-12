@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="layout">
+    <header style="background: #333; padding: 10px;">
+        <NavLink href="/" class="nav-link" style="color:white; margin-right: 20px;">
+            🏠 Home
+        </NavLink>
+        <NavLink href="/tasks" class="nav-link" style="color:white;">
+            🗂️ Task Board
+        </NavLink>
+    </header>
+
+    <main style="padding: 20px;">
+        @Body
+    </main>
+</div>
