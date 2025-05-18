@@ -1,0 +1,55 @@
+﻿@page "/journal"
+@using VibeQuest.Models
+@inject Services.TaskService TaskService
+
+<h1>📓 Journal</h1>
+
+<div>
+    <textarea @bind="entryText" placeholder="Write your thoughts..." rows="6" cols="60"></textarea>
+    <br />
+    <button @onclick="SaveEntry">Save Reflection</button>
+</div>
+
+@if (journalEntries.Any())
+{
+    <h3>Past Entries</h3>
+    <ul>
+        @foreach (var entry in journalEntries.OrderByDescending(e => e.Timestamp))
+        {
+            <li>
+                <strong>@entry.Timestamp.ToShortDateString()</strong>:<br />
+                <em>@entry.Text</em>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No journal entries yet. Start reflecting today!</p>
+}
+
+@code {
+    private string entryText = string.Empty;
+    private List<JournalEntry> journalEntries = new();
+
+    protected override void OnInitialized()
+    {
+        journalEntries = TaskService.GetJournalEntries();
+    }
+
+    private void SaveEntry()
+    {
+        if (!string.IsNullOrWhiteSpace(entryText))
+        {
+            var entry = new JournalEntry
+                {
+                    Text = entryText,
+                    Timestamp = DateTime.Now
+                };
+
+            TaskService.AddJournalEntry(entry);
+            journalEntries.Insert(0, entry);
+            entryText = string.Empty;
+        }
+    }
+}

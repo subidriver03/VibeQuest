@@ -1,0 +1,21 @@
+﻿@page "/quests"
+@inject Services.TaskService TaskService
+
+<h1>🗒️ Quest Log</h1>
+
+@if (TaskService.Tasks.Any())
+{
+    <ul>
+        @foreach (var task in TaskService.Tasks)
+        {
+            <li>
+                <strong>@task.Title</strong> — <em>@task.SkillCategory</em>
+                <span style="margin-left: 10px;">[XP: @task.XP]</span>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No quests logged yet. Start your journey by completing some tasks!</p>
+}

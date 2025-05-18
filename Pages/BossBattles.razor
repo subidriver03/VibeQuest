@@ -1,0 +1,62 @@
+﻿@page "/boss"
+@inject Services.TaskService TaskService
+
+<h1>🐉 Boss Battles</h1>
+
+@if (bosses.Any())
+{
+    <ul style="list-style-type: none; padding-left: 0;">
+        @foreach (var boss in bosses)
+        {
+            <li style="margin-bottom: 16px; padding: 12px; border: 2px solid #900; border-radius: 8px;">
+                <strong>@boss.Name</strong> – <em>@boss.Description</em><br />
+                <progress value="@boss.Progress" max="@boss.Goal"></progress>
+                <p>@boss.Progress/@boss.Goal steps complete</p>
+
+                @if (!boss.IsDefeated)
+                {
+                    <button @onclick="() => ProgressBoss(boss)">Complete Step</button>
+                }
+                else
+                {
+                    <p style="color: green;"><strong>Boss Defeated!</strong></p>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No active boss battles yet. New challenges coming soon!</p>
+}
+
+@code {
+    private List<BossBattle> bosses = new();
+
+    protected override void OnInitialized()
+    {
+        // Example bosses — could be seeded or added by user in future
+        bosses = new List<BossBattle>
+        {
+            new BossBattle { Name = "Focus Fiend", Description = "Stay focused for 3 days straight.", Goal = 3 },
+            new BossBattle { Name = "Procrastidragon", Description = "Complete 5 tasks without skipping a day.", Goal = 5 }
+        };
+    }
+
+    private void ProgressBoss(BossBattle boss)
+    {
+        if (!boss.IsDefeated)
+        {
+            boss.Progress++;
+        }
+    }
+
+    public class BossBattle
+    {
+        public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
+        public int Goal { get; set; }
+        public int Progress { get; set; }
+        public bool IsDefeated => Progress >= Goal;
+    }
+}

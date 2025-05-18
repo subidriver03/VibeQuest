@@ -1,0 +1,55 @@
+﻿@page "/rewards"
+@inject Services.TaskService TaskService
+
+<h1>🎁 Reward Store</h1>
+<p>You have <strong>@TaskService.Progress.TotalXP</strong> XP</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+    @foreach (var reward in availableRewards)
+    {
+        <div style="border: 1px solid #ccc; padding: 16px; border-radius: 8px;">
+            <h4>@reward.Name</h4>
+            <p>@reward.Description</p>
+            <p><strong>Cost:</strong> @reward.Cost XP</p>
+            <button @onclick="() => PurchaseReward(reward)" disabled="@reward.IsUnlocked || !CanAfford(reward)">
+                @(reward.IsUnlocked ? "Unlocked" : "Unlock")
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    private List<RewardItem> availableRewards = new();
+
+    protected override void OnInitialized()
+    {
+        availableRewards = new List<RewardItem>
+        {
+            new RewardItem { Name = "Dark Mode Theme", Description = "Switch to a sleek dark UI.", Cost = 100 },
+            new RewardItem { Name = "Custom Avatar", Description = "Upload your own Hero image.", Cost = 200 },
+            new RewardItem { Name = "Motivational Boost", Description = "Unlock a daily quote popup.", Cost = 150 }
+        };
+    }
+
+    private void PurchaseReward(RewardItem reward)
+    {
+        if (!reward.IsUnlocked && TaskService.Progress.TotalXP >= reward.Cost)
+        {
+            reward.IsUnlocked = true;
+            if (TaskService.SpendXP(reward.Cost))
+            {
+                reward.IsUnlocked = true;
+            }
+        }
+    }
+
+    private bool CanAfford(RewardItem reward) => TaskService.Progress.TotalXP >= reward.Cost;
+
+    public class RewardItem
+    {
+        public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
+        public int Cost { get; set; }
+        public bool IsUnlocked { get; set; } = false;
+    }
+}

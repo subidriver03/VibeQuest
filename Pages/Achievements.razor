@@ -1,0 +1,67 @@
+﻿@page "/achievements"
+@inject Services.TaskService TaskService
+
+<h1>🏆 Achievements</h1>
+
+@if (earnedAchievements.Any())
+{
+    <ul style="list-style-type: none; padding-left: 0;">
+        @foreach (var achievement in earnedAchievements)
+        {
+            <li style="margin-bottom: 12px; padding: 12px; border: 1px solid #ccc; border-radius: 6px;">
+                <strong>@achievement.Title</strong><br />
+                <small>@achievement.Description</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>You haven't unlocked any achievements yet. Keep progressing to earn rewards!</p>
+}
+
+@code {
+    private List<Achievement> earnedAchievements = new();
+
+    protected override void OnInitialized()
+    {
+        var progress = TaskService.Progress;
+        var tasks = TaskService.Tasks;
+        var journals = TaskService.GetJournalEntries();
+
+        earnedAchievements = new List<Achievement>();
+
+        if (tasks.Any(t => t.IsCompleted))
+        {
+            earnedAchievements.Add(new Achievement
+                {
+                    Title = "🎯 First Quest Complete",
+                    Description = "You've completed your first quest!"
+                });
+        }
+
+        if (progress.TotalXP >= 100)
+        {
+            earnedAchievements.Add(new Achievement
+                {
+                    Title = "💪 Gaining Momentum",
+                    Description = "You've earned over 100 XP!"
+                });
+        }
+
+        if (journals.Count >= 3)
+        {
+            earnedAchievements.Add(new Achievement
+                {
+                    Title = "🧘 Journal Master",
+                    Description = "You've reflected at least 3 times."
+                });
+        }
+    }
+
+    public class Achievement
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+    }
+}

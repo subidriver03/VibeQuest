@@ -1,0 +1,50 @@
+﻿@page "/skills"
+@inject Services.TaskService TaskService
+
+<h1>🌱 Skill Tree</h1>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+
+    @foreach (var skill in skillCategories)
+    {
+        <div style="border: 1px solid #ccc; padding: 16px; border-radius: 8px;">
+            <h3>@skill.Name</h3>
+            <div style="background: #eee; border-radius: 4px; overflow: hidden; height: 20px;">
+                <div style="height: 100%; width: @skill.Percent%; background: @skill.Color;"></div>
+            </div>
+            <p>@skill.XP XP</p>
+        </div>
+    }
+
+</div>
+
+@code {
+    private List<SkillDisplay> skillCategories = new();
+
+    protected override void OnInitialized()
+    {
+        var progress = TaskService.Progress;
+        int totalXP = progress.TotalXP;
+
+        skillCategories = new List<SkillDisplay>
+        {
+            new SkillDisplay { Name = "Mind", XP = progress.Mind, Color = "#4CAF50" },
+            new SkillDisplay { Name = "Body", XP = progress.Body, Color = "#2196F3" },
+            new SkillDisplay { Name = "Creativity", XP = progress.Creativity, Color = "#FF9800" },
+            new SkillDisplay { Name = "Focus", XP = progress.Focus, Color = "#9C27B0" },
+        };
+
+        foreach (var skill in skillCategories)
+        {
+            skill.Percent = totalXP > 0 ? (int)((skill.XP / (double)totalXP) * 100) : 0;
+        }
+    }
+
+    private class SkillDisplay
+    {
+        public string Name { get; set; } = "";
+        public int XP { get; set; }
+        public int Percent { get; set; }
+        public string Color { get; set; } = "";
+    }
+}
