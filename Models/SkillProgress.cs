@@ -1,12 +1,9 @@
-﻿namespace VibeQuest.Models;
-
-public class SkillProgress
-
+﻿public class SkillProgress
 {
-    public int Mind { get; set; }
-    public int Body { get; set; }
-    public int Creativity { get; set; }
-    public int Focus { get; set; }
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public string SkillType { get; set; } = string.Empty;
+    public int XP { get; set; }
 
-    public int TotalXP => Mind + Body + Creativity + Focus;
+    public User? User { get; set; }
 }
