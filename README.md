@@ -212,3 +212,65 @@ SQLite schema includes tables for: Users, Tasks, SkillProgress, and JournalEntri
 | 2025-05-11 | 1.3     | Vibe Rantz   | Implemented in-memory task logic and XP tracker in Blazor WASM app     |
 | 2025-05-11 | 1.3     | Vibe Rantz   | Added TaskBoard UI and XP progress bar visualization on Home page      |
 | 2025-05-11 | 1.3     | Vibe Rantz   | Registered and injected TaskService using singleton DI pattern          |
+
+## 📌 Version 1.4 – Feature Update
+**Date:** 2025-05-18  
+**Author:** Vibe Rantz
+
+### 🔄 Changelog
+
+| Date       | Version | Author      | Description                                                                 |
+|------------|---------|-------------|-----------------------------------------------------------------------------|
+| 2025-05-18 | 1.4     | Vibe Rantz  | Added ApplicationUser model and Identity integration. Introduced new core pages: Profile, Quest Log, Journal, Skill Tree, Achievements, Boss Battles, and Reward Store. Implemented XP logic and reward mechanisms. |
+
+---
+
+### 📋 Functional Requirements – New Pages
+
+- **FR-11: Profile Page (`/profile`)**  
+  Display Hero Name, XP totals, and basic user stats.
+
+- **FR-12: Quest Log Page (`/quests`)**  
+  List all user tasks by title, skill category, difficulty, XP earned, and completion status.
+
+- **FR-13: Journal Page (`/journal`)**  
+  Let users reflect daily or weekly; grant XP ("Mental Clarity") for each saved entry.
+
+- **FR-14: Skill Tree Page (`/skills`)**  
+  Visually represent XP in Mind, Body, Creativity, and Focus with color-coded bars.
+
+- **FR-15: Achievements Page (`/achievements`)**  
+  Display unlockable badges based on progress (e.g., first quest, 100 XP, 3 journal entries).
+
+- **FR-16: Boss Battles Page (`/boss`)**  
+  Simulate multi-day milestone quests with visual progress bars. Update steps on action.
+
+- **FR-17: Reward Store Page (`/rewards`)**  
+  Allow users to spend XP on digital unlockables like themes or motivational boosts.
+
+---
+
+### 🚀 Expanded System Features
+
+- **2.4 – Profile Module:**  
+  View user identity and growth; expandable for avatar, stats, etc.
+
+- **2.5 – Quest Log Module:**  
+  Task feed with XP breakdown and filters.
+
+- **2.6 – Journal Module:**  
+  Free-form entry system that rewards personal growth with XP.
+
+- **2.7 – Skill Tree Visualization:**  
+  Real-time, visual XP indicators per skill category.
+
+- **2.8 – Achievement Tracker:**  
+  Dynamic reward cards triggered by activity thresholds.
+
+- **2.9 – Boss Engine:**  
+  Step-based challenges with clear goals and XP-driven progress.
+
+- **2.10 – Reward Store:**  
+  Unlock system using XP as currency. Buttons are disabled if XP is insufficient.
+
+---
